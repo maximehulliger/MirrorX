@@ -23,6 +23,7 @@ public class Level {
             case 1:
                 level.elements.add(new Mirror(200, 250));
                 level.elements.add(new Mirror(200, 500));
+                level.elements.add(new Target(new Vector2D(450, 50), Color.GREEN));
                 level.sources.add(new Source(new Vector2D(100, 100), new Vector2D(0, 1), Color.GREEN));
                 Obstacle.Builder b = new Obstacle.Builder();
                 b.add(new Vector2D(200, 0));

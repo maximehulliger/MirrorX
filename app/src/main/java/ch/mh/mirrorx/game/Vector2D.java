@@ -33,6 +33,10 @@ public class Vector2D {
         return dx*dx + dy*dy;
     }
 
+    public double magSq() {
+        return x*x + y*y;
+    }
+
     public Vector2D add(Vector2D v) {
         x+=v.x;
         y+=v.y;

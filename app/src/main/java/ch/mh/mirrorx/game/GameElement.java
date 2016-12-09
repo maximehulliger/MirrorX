@@ -30,7 +30,7 @@ public interface GameElement {
 
     class Contact {
 
-        public static final Contact noContact = new Contact(null, null, Double.MAX_VALUE, 0, null);
+        public static final Contact noContact = new Contact(null, null, Double.MAX_VALUE, 0);
 
         public Ray ray;
         public GameElement element;
@@ -38,12 +38,12 @@ public interface GameElement {
         public double distanceOnSegment;
         public Vector2D point;
 
-        public Contact(Ray ray, GameElement element, double distance, double distanceOnSegment, Vector2D point) {
+        public Contact(Ray ray, GameElement element, double distance, double distanceOnSegment) {
             this.ray = ray;
             this.element = element;
             this.distance = distance;
             this.distanceOnSegment = distanceOnSegment;
-            this.point = point;
+            this.point = ray != null ? ray.origin.plus(ray.direction.copy().scale(distance)) : null;
         }
     }
 }

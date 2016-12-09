@@ -72,9 +72,10 @@ public class GameView extends SurfaceView implements Callback, GestureDetector.G
     }
 
     private void refreshRays() {
+        for (GameElement e : level.elements)
+            e.onReset();
         for (Source s : level.sources)
             s.emit(level.elements);
-        //invalidate();
     }
 
     @Override
