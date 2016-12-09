@@ -28,6 +28,11 @@ public class Obstacle implements GameElement {
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public Contact getContact(Ray ray) {
         // get first mirror
         GameElement firstElement = null;

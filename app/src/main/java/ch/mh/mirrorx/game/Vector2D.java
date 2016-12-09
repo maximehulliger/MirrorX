@@ -4,17 +4,22 @@ package ch.mh.mirrorx.game;
 public class Vector2D {
 
     public final static Vector2D zero = new Vector2D();
+    public static int deviceHeight, deviceWidth;
 
-    public double x, y;
+    public float x, y;
 
     public Vector2D() {
         x = y = 0;
     };
 
-    public Vector2D(double x, double y) {
+    public Vector2D(float x, float y) {
         this.x = x;
         this.y = y;
-    };
+    }
+
+    public static Vector2D rel(float x, float y) {
+        return new Vector2D(x*deviceWidth, y*deviceHeight);
+    }
 
     public Vector2D copy() {
         return new Vector2D(x, y);
@@ -24,16 +29,16 @@ public class Vector2D {
         return "["+x+", "+y+"]";
     }
 
-    public double length() {
-        return Math.sqrt(x*x+y*y);
+    public float length() {
+        return (float)Math.sqrt(x*x+y*y);
     };
 
-    public double distSq(Vector2D v) {
-        final double dx = v.x - x, dy = v.y - y;
+    public float distSq(Vector2D v) {
+        final float dx = v.x - x, dy = v.y - y;
         return dx*dx + dy*dy;
     }
 
-    public double magSq() {
+    public float magSq() {
         return x*x + y*y;
     }
 
@@ -75,10 +80,10 @@ public class Vector2D {
     };
 
     public Vector2D rotate(double theta, Vector2D center) {
-        double sin = Math.sin(theta);
-        double cos = Math.cos(theta);
-        double dx = x-center.x;
-        double dy = y-center.y;
+        float sin = (float)Math.sin(theta);
+        float cos = (float)Math.cos(theta);
+        float dx = x-center.x;
+        float dy = y-center.y;
         x = center.x+dx*cos-dy*sin;
         y = center.y+dy*cos+dx*sin;
         return this;
@@ -89,12 +94,12 @@ public class Vector2D {
         return this;
     };
 
-    public double dot(Vector2D v) {
+    public float dot(Vector2D v) {
         return x*v.x+y*v.y;
     };
 
     /** Cross with extended z coordinate = 0. Return the z coordinate */
-    public double cross(Vector2D v) {
+    public float cross(Vector2D v) {
         return (x*v.y) - (y*v.x);
     }
 

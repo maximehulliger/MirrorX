@@ -1,8 +1,10 @@
 package ch.mh.mirrorx.game;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -11,12 +13,15 @@ import android.view.SurfaceView;
 
 public class GameView extends SurfaceView implements Callback, GestureDetector.GestureListener {
 
-    private Level level;
+    public Level level;
     private final GestureDetector rotationDetector;
     public int width;
     public  int height;
     Context context;
     private GameThread gameThread;
+    public boolean over = false;
+    private Vector2D victoryTextPos = Vector2D.rel(0.5f, 0.35f), victoryBackSize = Vector2D.rel(0.7f, 0.15f);
+    private Paint victoryPaint = new Paint(), victoryBackgroundPaint = new Paint();
 
     public GameView(Context c, AttributeSet attributeSet) {
         super(c, attributeSet);
@@ -26,6 +31,13 @@ public class GameView extends SurfaceView implements Callback, GestureDetector.G
         context=c;
         rotationDetector = new GestureDetector(this);
         setBackgroundColor(Color.BLACK);
+
+        victoryBackgroundPaint.setAntiAlias(true);
+        victoryBackgroundPaint.setColor(Color.rgb(255, 216, 177));
+        victoryPaint.setColor(Color.rgb(255, 102, 0));
+        victoryPaint.setAntiAlias(true);
+        victoryPaint.setTextAlign(Paint.Align.CENTER);
+        victoryPaint.setTextSize(60);
     }
 
     public void setLevel(Level level) {
@@ -37,21 +49,25 @@ public class GameView extends SurfaceView implements Callback, GestureDetector.G
 
     @Override
     public void onPointerDown(Vector2D pos) {
-        // on trouve le miroir le plus proche
-        GameElement.Playable closestPlayable = null;
-        double closestDistSq = Double.MAX_VALUE;
-        for (GameElement e : level.elements) {
-            GameElement.Playable p = e.getPlayable();
-            if (p != null) {
-                double distSq = p.getPos().distSq(pos);
-                if (distSq < closestDistSq) {
-                    closestPlayable = p;
-                    closestDistSq = distSq;
+        if (!over) {
+            // on trouve le miroir le plus proche
+            GameElement.Playable closestPlayable = null;
+            double closestDistSq = Double.MAX_VALUE;
+            for (GameElement e : level.elements) {
+                GameElement.Playable p = e.getPlayable();
+                if (p != null) {
+                    double distSq = p.getPos().distSq(pos);
+                    if (distSq < closestDistSq) {
+                        closestPlayable = p;
+                        closestDistSq = distSq;
+                    }
                 }
             }
-        }
-        if (closestPlayable != null) {
-            selectedElement = closestPlayable;
+            if (closestPlayable != null) {
+                selectedElement = closestPlayable;
+            }
+        } else {
+            ((Activity)context).finish();
         }
     }
 
@@ -95,6 +111,17 @@ public class GameView extends SurfaceView implements Callback, GestureDetector.G
 	            e.draw(canvas);
 	        for (Source s : level.sources)
 	            s.drawRay(canvas);
+            if (over) {
+                canvas.drawRoundRect(victoryTextPos.x-victoryBackSize.x/2,
+                        victoryTextPos.y-victoryBackSize.y/2,
+                        victoryTextPos.x+victoryBackSize.x/2,
+                        victoryTextPos.y+victoryBackSize.y/2,
+                        10, 10, victoryBackgroundPaint);
+                canvas.drawText("Victory !",
+                        victoryTextPos.x,
+                        victoryTextPos.y - ((victoryPaint.descent() + victoryPaint.ascent()) / 2),
+                        victoryPaint);
+            }
         }
     }
 

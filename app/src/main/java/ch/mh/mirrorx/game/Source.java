@@ -18,7 +18,7 @@ public class Source {
     private final Ray sourceRay;
 
     public Source(Vector2D pos, Vector2D dir, int color) {
-        sourceRay = new Ray(pos, dir, null);
+        sourceRay = new Ray(pos, dir, null, color);
 
         Vector2D triangleOrigin = pos.minus(dir.copy().scale(triangleLength));
         Vector2D originToLeft = dir.crossZn().scale(triangleWidth/2);

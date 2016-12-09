@@ -26,8 +26,8 @@ public class Segment implements GameElement {
         Vector2D v1 = ray.origin.minus(start);
         Vector2D v2 = end.minus(start);
         Vector2D v3 = new Vector2D(-ray.direction.y, ray.direction.x);
-        double v2DotV3 = v2.dot(v3);
-        double t2 = v1.dot(v3) / v2DotV3;
+        float v2DotV3 = v2.dot(v3);
+        float t2 = v1.dot(v3) / v2DotV3;
         if (t2 >= 0 && t2 <= 1)
             return new Contact(ray, this, v2.cross(v1) / v2DotV3, t2);
         else
@@ -41,6 +41,11 @@ public class Segment implements GameElement {
 
     @Override
     public void onReset() {
+
+    }
+
+    @Override
+    public void update() {
 
     }
 

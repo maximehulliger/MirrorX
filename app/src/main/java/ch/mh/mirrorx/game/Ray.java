@@ -1,5 +1,6 @@
 package ch.mh.mirrorx.game;
 
+import android.graphics.Paint;
 import android.graphics.Path;
 
 import java.util.List;
@@ -7,9 +8,11 @@ import java.util.List;
 public class Ray {
 
     public final Vector2D origin, direction;
+    public final int color;
     private final Mirror source;
 
-    public Ray(Vector2D origin, Vector2D direction, Mirror source) {
+    public Ray(Vector2D origin, Vector2D direction, Mirror source, int color) {
+        this.color = color;
         this.origin = origin;
         this.direction = direction.normalize();
         this.source = source;

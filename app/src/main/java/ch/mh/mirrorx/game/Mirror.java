@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Mirror extends Segment implements GameElement.Playable {
 
-    private final static double length = 100, edgeWidth = 10;
+    private final static float length = 100, edgeWidth = 10;
     public Vector2D pos, norm;
 
     private final static Paint paint = new Paint(), edgePaint = new Paint();
@@ -30,9 +30,9 @@ public class Mirror extends Segment implements GameElement.Playable {
         edgePaint.setStrokeWidth(2);
     }
 
-    public Mirror(double posX, double posY) {
+    public Mirror(Vector2D pos) {
         super(paint);
-        this.pos = new Vector2D(posX, posY);
+        this.pos = pos;
         setNorm(new Vector2D(0, -1));
     }
 
@@ -67,7 +67,7 @@ public class Mirror extends Segment implements GameElement.Playable {
         Vector2D currentStart=start.copy();
         for (int i=0; i< nLine; i++) {
             Vector2D end = currentStart.plus(toEnd);
-            canvas.drawLine((float)currentStart.x, (float)currentStart.y, (float)end.x, (float)end.y, edgePaint);
+            canvas.drawLine(currentStart.x, currentStart.y, end.x, end.y, edgePaint);
             currentStart.add(toNextStart);
         }
     }
@@ -78,7 +78,7 @@ public class Mirror extends Segment implements GameElement.Playable {
         if (dirDotN < 0) {
             //dir' = dir − 2(dir · n)n
             Vector2D newDir = contact.ray.direction.minus(norm.copy().scale(2*dirDotN));
-            new Ray(contact.point, newDir, this).emit(elements, ray, depth+1);
+            new Ray(contact.point, newDir, this, contact.ray.color).emit(elements, ray, depth+1);
         }
     }
 
